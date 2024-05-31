@@ -1,0 +1,40 @@
+server:
+  port: 8080
+spring:
+  main:
+    allow-circular-references: true
+  application:
+    name: pulsar-exporter
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+logging:
+  config: classpath:log4j2.xml
+
+config:
+    enableCollect: true
+    webTelemetryPath: /metrics
+    pulsar:
+      zookeeper:
+        zkStr: 127.0.0.1:2181
+        sessionTimeoutMs: 60000
+      bookie:
+        bookieZkPath: /ledgers/cookies
+        bookieDiskUri: api/v1/bookie/list_bookie_info
+      broker:
+        brokerZkPath: /loadbalance/brokers
+        brokerHealthUri: admin/v2/brokers/health
+        brokerBundleUri: admin/v2/broker-stats/topics
+threadpool:
+  collect-client-metric-executor:
+    core-pool-size: 10
+    maximum-pool-size: 10
+    keep-alive-time: 3000
+    queueSize: 5000
+task:
+  count: 5 # num of scheduled-tasks
+  collectBrokerStats:
+    cron: 0 */5 * * *  ?
+
